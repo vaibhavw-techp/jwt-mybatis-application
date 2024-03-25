@@ -1,6 +1,6 @@
 package com.jwt.mybatis.jwtApplication.controller;
 
-import com.jwt.mybatis.jwtApplication.config.UserDetailService;
+import com.jwt.mybatis.jwtApplication.service.UserDetailService;
 import com.jwt.mybatis.jwtApplication.dto.JwtRequest;
 import com.jwt.mybatis.jwtApplication.dto.JwtResponse;
 import com.jwt.mybatis.jwtApplication.security.JwtHelper;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private UserDetailService userDetailService;
     @Autowired
@@ -28,10 +27,9 @@ public class AuthController {
     private JwtHelper helper;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
+    public ResponseEntity<JwtResponse> getLogin(@RequestBody JwtRequest request) {
 
         this.doAuthenticate(request.getEmail(), request.getPassword());
-
 
         UserDetails userDetails = userDetailService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
