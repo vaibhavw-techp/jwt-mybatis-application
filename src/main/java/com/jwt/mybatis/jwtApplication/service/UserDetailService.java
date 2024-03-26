@@ -23,7 +23,7 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userData = userRepository.findUserByUsername(username);
-        System.out.println("userData: " + userData);
+
         if (userData != null) {
             Collection<String> AutorityListOfUser = Arrays.asList(userData.getRole().name());
             return new User(username, new BCryptPasswordEncoder().encode(userData.getPassword()), AutorityListOfUser.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
