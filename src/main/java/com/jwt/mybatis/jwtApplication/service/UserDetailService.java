@@ -25,7 +25,7 @@ public class UserDetailService implements UserDetailsService {
         UserEntity userData = userRepository.findUserByUsername(username);
         System.out.println("userData: " + userData);
         if (userData != null) {
-            Collection<String> AutorityListOfUser = Arrays.asList(userData.getRole().split(","));
+            Collection<String> AutorityListOfUser = Arrays.asList(userData.getRole().name());
             return new User(username, new BCryptPasswordEncoder().encode(userData.getPassword()), AutorityListOfUser.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
         } else {
             throw new UsernameNotFoundException("user not found with username: "+username);

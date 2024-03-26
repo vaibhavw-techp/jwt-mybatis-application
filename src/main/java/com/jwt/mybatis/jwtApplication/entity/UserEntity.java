@@ -1,17 +1,29 @@
 package com.jwt.mybatis.jwtApplication.entity;
 
+import com.jwt.mybatis.jwtApplication.enums.Role;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
+@Table(name = "user_data")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class UserEntity {
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String password;
-    private String role;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
