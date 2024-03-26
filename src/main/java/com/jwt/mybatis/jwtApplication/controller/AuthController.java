@@ -1,7 +1,7 @@
 package com.jwt.mybatis.jwtApplication.controller;
 
 import com.jwt.mybatis.jwtApplication.service.UserDetailService;
-import com.jwt.mybatis.jwtApplication.dto.JwtRequest;
+import com.jwt.mybatis.jwtApplication.dto.LoginRequest;
 import com.jwt.mybatis.jwtApplication.dto.JwtResponse;
 import com.jwt.mybatis.jwtApplication.security.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +20,17 @@ public class AuthController {
     @Autowired
     private UserDetailService userDetailService;
     @Autowired
-    private AuthenticationManager manager;
+    private AuthenticationManager authenticationManager;
     @Autowired
-    private JwtHelper helper;
+    private JwtHelper jwtHelper;
 
     @PostMapping("/login")
-    public JwtResponse getLogin(@RequestBody JwtRequest request) {
+    public JwtResponse loginUser(@RequestBody LoginRequest request) {
         try {
-            this.doAuthenticate(request.getEmail(), request.getPassword());
+            this.doAuthenticate(request.getUsername(), request.getPassword());
 
-            UserDetails userDetails = userDetailService.loadUserByUsername(request.getEmail());
-            String token = this.helper.generateToken(userDetails);
+            UserDetails userDetails = userDetailService.loadUserByUsername(request.getUsername());
+            String token = this.jwtHelper.generateToken(userDetails);
 
             JwtResponse response = JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).build();
             return response;
@@ -40,9 +40,9 @@ public class AuthController {
         }
     }
 
-    private void doAuthenticate(String email, String password) {
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
-        manager.authenticate(authentication);
+    private void doAuthenticate(String username, String password) {
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
+        authenticationManager.authenticate(authentication);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
