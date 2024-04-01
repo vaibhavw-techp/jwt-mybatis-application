@@ -16,9 +16,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITE_LIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/v2/api-docs/**",
+            "/swagger-resources/**"
+    };
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -37,7 +42,8 @@ public class SecurityConfig {
 
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeRequests().requestMatchers("/auth/login").permitAll()
-                .anyRequest().denyAll().and()
+                .requestMatchers(AUTH_WHITE_LIST).permitAll()
+                .anyRequest().authenticated().and()
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return httpSecurity.build();
