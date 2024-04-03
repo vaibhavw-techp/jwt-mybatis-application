@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,10 +26,10 @@ public class UserDetailService implements UserDetailsService {
         UserEntity userData = userRepository.findUserByUsername(username);
 
         if (userData != null) {
-            Collection<String> AutorityListOfUser = Arrays.asList(userData.getRole().name());
+            Collection<String> AutorityListOfUser = List.of(userData.getRole().name());
             return new User(username, new BCryptPasswordEncoder().encode(userData.getPassword()), AutorityListOfUser.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
         } else {
-            throw new UsernameNotFoundException("user not found with username: "+username);
+            throw new UsernameNotFoundException("user not found with username: " + username);
         }
 
     }

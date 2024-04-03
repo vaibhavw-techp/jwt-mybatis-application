@@ -1,9 +1,9 @@
 package com.jwt.mybatis.jwtApplication.controller;
 
-import com.jwt.mybatis.jwtApplication.service.UserDetailService;
-import com.jwt.mybatis.jwtApplication.dto.LoginRequest;
 import com.jwt.mybatis.jwtApplication.dto.JwtResponse;
+import com.jwt.mybatis.jwtApplication.dto.LoginRequest;
 import com.jwt.mybatis.jwtApplication.security.JwtHelper;
+import com.jwt.mybatis.jwtApplication.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,8 +34,7 @@ public class AuthController {
 
             JwtResponse response = JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).build();
             return response;
-        }
-        catch (AuthenticationException e) {
+        } catch (AuthenticationException e) {
             throw new BadCredentialsException(handleBadCredentialsException());
         }
     }
