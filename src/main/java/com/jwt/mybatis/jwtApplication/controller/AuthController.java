@@ -3,6 +3,7 @@ package com.jwt.mybatis.jwtApplication.controller;
 import com.jwt.mybatis.jwtApplication.dto.JwtResponse;
 import com.jwt.mybatis.jwtApplication.dto.LoginRequest;
 import com.jwt.mybatis.jwtApplication.security.JwtHelper;
+import com.jwt.mybatis.jwtApplication.security.JwtHelperNimbus;
 import com.jwt.mybatis.jwtApplication.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private JwtHelper jwtHelper;
+    private JwtHelperNimbus jwtHelper;
 
     @PostMapping("/login")
     public JwtResponse loginUser(@RequestBody LoginRequest request) {
