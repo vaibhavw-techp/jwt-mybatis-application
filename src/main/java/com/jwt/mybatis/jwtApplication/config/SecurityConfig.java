@@ -1,7 +1,5 @@
 package com.jwt.mybatis.jwtApplication.config;
 
-import com.jwt.mybatis.jwtApplication.security.JwtAuthenticationEntryPoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +21,7 @@ public class SecurityConfig {
             "/v2/api-docs/**",
             "/swagger-resources/**"
     };
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -43,7 +40,6 @@ public class SecurityConfig {
                 .authorizeRequests().requestMatchers("/auth/login").permitAll()
                 .requestMatchers(AUTH_WHITE_LIST).permitAll()
                 .anyRequest().authenticated().and()
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return httpSecurity.build();
     }
