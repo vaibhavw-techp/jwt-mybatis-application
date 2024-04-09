@@ -19,7 +19,7 @@ import java.util.Map;
 @Component
 public class JwtHelper {
 
-    public static final long JWT_TOKEN_VALIDITY = 30 * 60; // 30 minutes
+    public static final long JWT_TOKEN_VALIDITY = 300 * 60; // 5 Hours
 
     @Value("${jwt.secret}")
     private String secret;
@@ -31,6 +31,7 @@ public class JwtHelper {
         Map<String, Object> claims = new HashMap<>();
         UserEntity role = userRepository.findUserByUsername(userDetails.getUsername());
         claims.put("Role", role.getRole());
+        claims.put("assc_id", role.getAsscId());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
